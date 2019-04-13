@@ -54,3 +54,4 @@ dkms.conf
 # Mac things
 .vscode/*
 .DS_Store
+.dist/*
