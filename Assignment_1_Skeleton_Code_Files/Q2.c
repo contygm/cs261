@@ -37,13 +37,23 @@ int main(){
     int result = foo(&x, &y, z);
 
     /*Print the values of x, y and z*/
-    printf("foo: Value of x: %d\n", x);
-    printf("foo: Value of y: %d\n", y);
-    printf("foo: Value of z: %d\n", z);
+    printf("from foo: Value of x: %d\n", x);
+    printf("from foo: Value of y: %d\n", y);
+    printf("from foo: Value of z: %d\n", z);
 
     /*Print the value returned by foo*/
     printf("Value of foo result: %d\n", result);
-    
+
+    // A. Is the return value different than the value of 
+    // integer z? Why or why not?
+    // Yes. foo() decrements a copy of z so the return 
+    // value and z are different
+    //
+    // B. Are the values of integers x and y different before 
+    // and after calling thefunction foo(..)? Why or why not?
+    // No, foo() doens't manupulate those values
+    //
+
     return 0;
 }
     

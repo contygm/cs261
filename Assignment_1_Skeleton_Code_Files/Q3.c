@@ -43,7 +43,7 @@ void camelCase(char* word) {
 		} 
 		// replace spaces with underscore
 		else if (word[i] == 32) {
-			word[i] = "_";
+			word[i] = 95;
 		}
 		// if not lowercase letter, space or underscore then delete
 		else if (word[i] < 97 && word[i] > 122 && word[i] != 32 && word[i] != 95) {
@@ -53,14 +53,22 @@ void camelCase(char* word) {
 
 	// remove duplicate underscores
 	for (int i = 0; i < length; i++) {
-		if(word[i] == "_" && word[i+1]) {
-
+		if(word[i] == 95 && word[i+1] == 95) {
+			for (int j = i; j < length; j++) {
+				word[j] = word[j+1];
+			}
 		}
 	}
 	
 	// camelcase the word
 	for (int i = 0; i < length; i++) {
-		
+		if(word[i] == 95) {
+			toUpperCase(word[i+1]);
+			for (int j = i; j < length; j++) {
+				word[j] = word[j+1];
+			}
+			i++;
+		}
 	}
 }
 
@@ -71,8 +79,8 @@ int main() {
 	printf("What string would you like to camelCase? ");
 
 	//TODO: don't allow  "__", "_ _ _", " ", "435%7_$$", "random"
-	scanf("%[^\n]s ", string);
-	//scanf("%[^\n]%*c", word);
+	// scanf("%[^\n]s ", string);
+	scanf("%[^\n]%*c", string);
 	
 	/*Call camelCase*/
 	camelCase(string);

@@ -11,14 +11,14 @@
 void fooA(int* iptr){
 
     /*Print the value and address of the integer pointed to by iptr*/
-    printf("Value of iptr: %d\n", &iptr);
-    printf("Address of iptr: %p\n", &iptr);
+    printf("from fooA: value of iptr: %d\n", *iptr);
+    printf("from fooA: address of iptr: %p\n", &iptr);
 
     /*Increment the value of the integer pointed to by iptr by 5*/
     (*iptr) += 5;
     
     /*Print the address of iptr itself*/
-    printf("Address of iptr: %p\n", &iptr);
+    printf("from fooA: Address of iptr: %p\n", &iptr);
 
     /*Dummy variable, ignore the warning*/
     int c=5;  
@@ -28,14 +28,14 @@ void fooA(int* iptr){
 void fooB(int* jptr){
   
     /*Print the value and address of the integer pointed to by jptr*/
-    printf("Value of jptr: %d\n", &jptr);
-    printf("Address of jptr: %p\n", &jptr);
+    printf("from fooB: Value of jptr: %d\n", *jptr);
+    printf("from fooB: Address of jptr: %p\n", &jptr);
 
     /*Decrement the address by 1 pointed to by jptr using jptr */
     (*jptr)--;
       
     /*Print the address of jptr itself*/
-    printf("Address of jptr: %p\n", &jptr);
+    printf("from fooB: Address of jptr: %p\n", &jptr);
 }
 
 
@@ -60,6 +60,13 @@ int main(){
     /*Print the value and address of x*/
     printf("fooB(): Value of x: %d\n", x);
     printf("fooB(): Address of x: %p\n", &x);
+
+    // Are the value and address of x different than 
+    // the value and address that were printed 
+    // before the call to fooB(..)? Why or why not?
+    // The value and address of x printed after fooB() 
+    // are different from the value and address printed before. 
+    // This is because of the dummy variable at the end of fooA()
     
     return 0;
 }
