@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 char toUpperCase(char ch) {
 	/*Convert ch to upper case, assuming it is in lower case currently*/
 	return ch - 'a' + 'A';
@@ -33,42 +31,61 @@ int stringLength(char s[]) {
 void camelCase(char* word) {
 	/*Convert to camelCase*/
 	int length = stringLength(word);
+	int originalLength = stringLength(word);
+
 	
 	// delete non alpha char, convert all to lower case
 	for (int i = 0; i < length; i++) {
 		// change uppercase to lower case
 		if (word[i] >= 65 && word[i] <=90)
 		{
-			toLowerCase(word[i]);
+			word[i] = toLowerCase(word[i]);
 		} 
 		// replace spaces with underscore
 		else if (word[i] == 32) {
 			word[i] = 95;
 		}
 		// if not lowercase letter, space or underscore then delete
-		else if (word[i] < 97 && word[i] > 122 && word[i] != 32 && word[i] != 95) {
-			word[i] = 127;
+		else if ((word[i] < 97 || word[i] > 122) && word[i] != 32 && word[i] != 95) {
+			word[i] = 95;
 		}
 	}
 
 	// remove duplicate underscores
 	for (int i = 0; i < length; i++) {
-		if(word[i] == 95 && word[i+1] == 95) {
+		if((word[i] == 95 && i == 0) || (word[i] == 95 && word[i+1] == 95)) {
 			for (int j = i; j < length; j++) {
 				word[j] = word[j+1];
 			}
+			length--;
+			i--;
+		} else if ((word[i] == 95 && i == (length-1))) {
+			
+			length--;
 		}
 	}
-	
+
 	// camelcase the word
 	for (int i = 0; i < length; i++) {
 		if(word[i] == 95) {
-			toUpperCase(word[i+1]);
 			for (int j = i; j < length; j++) {
 				word[j] = word[j+1];
 			}
-			i++;
+			length--;
+			word[i] = toUpperCase(word[i]);
 		}
+	}
+
+	/*Print the new string*/
+	if (length <= 0 || originalLength == length) {
+		printf("invalid input string \n");
+	} else {
+		for (int i = 0; i < length; i++)
+		{
+			printf("%c", word[i]);
+		}
+
+		printf("\n");
 	}
 }
 
@@ -78,16 +95,11 @@ int main() {
 	char *string = malloc(50 * sizeof(char));
 	printf("What string would you like to camelCase? ");
 
-	//TODO: don't allow  "__", "_ _ _", " ", "435%7_$$", "random"
-	// scanf("%[^\n]s ", string);
-	scanf("%[^\n]%*c", string);
+	scanf("%[^\n]s ", string);
 	
 	/*Call camelCase*/
 	camelCase(string);
 	
-	/*Print the new string*/
-	printf("camelCase string: %s\n", string);
-
 	return 0;
 }
 
