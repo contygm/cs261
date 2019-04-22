@@ -64,11 +64,11 @@ void output(struct student* students){
      
      // print headers
      printf("ID \t SCORE \n");
-     printf("------------------------");
+     printf("------------------------ \n");
 
      // print all ids and scores
      for(int i = 0; i < 10; i++) {
-          printf("%d \t %d \n: ", students[i].id, students[i].score);
+          printf("%d \t %d \n", students[i].id, students[i].score);
      }
 }
 
@@ -117,7 +117,7 @@ int main(){
      struct student* stud = NULL;
 
      /*Call allocate*/
-     stud = allocate(stud);
+     stud = allocate();
 
      /*Call generate*/
      generate(stud);
