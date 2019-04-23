@@ -45,10 +45,10 @@ void initDynArr(DynArr *v, int capacity)
 DynArr* newDynArr(int cap)
 {
 	assert(cap > 0);
-	DynArr *r = (DynArr *)malloc(sizeof( DynArr));
-	assert(r != 0);
-	initDynArr(r,cap);
-	return r;
+	DynArr *newArr = (DynArr *)malloc(sizeof( DynArr));
+	assert(newArr != 0);
+	initDynArr(newArr, cap);
+	return newArr;
 }
 
 /* Deallocate data array in dynamic array. 

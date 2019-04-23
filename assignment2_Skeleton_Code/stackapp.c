@@ -1,4 +1,4 @@
-/*	stack.c: Stack application. */
+/*	bracketsStack.c: bracketsStack application. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -6,7 +6,7 @@
 
 
 /* ***************************************************************
-Using stack to check for unbalanced parentheses.
+Using bracketsStack to check for unbalanced parentheses.
 ***************************************************************** */
 
 /* Returns the next character of the string, once reaches end return '0' (zero)
@@ -32,7 +32,56 @@ char nextChar(char* s)
 */
 int isBalanced(char* s)
 {
-	/* FIXME: You will write this function */		
+	/* FIXME: You will write this function */	
+	DynArr * bracketsStack;
+	bracketsStack = newDynArr(1);
+
+	char x;
+
+	do {
+		x = nextChar(s);
+
+		switch(x) {
+			// if opening bracket, push into stack
+			case '(':
+			case '{':
+			case '[':
+				pushDynArr(bracketsStack, x);
+				break;
+
+			// if closing bracket, check for match
+			case ')':
+			case '}':
+			case ']':
+				// make sure array isn't empty, before checking for top
+				if (sizeDynArr(bracketsStack) == 0) {
+					deleteDynArr(bracketsStack);
+					return 0;
+				} else if ((topDynArr(bracketsStack) == '(' && x == ')') 
+					|| (topDynArr(bracketsStack) == '[' && x == ']')
+					|| (topDynArr(bracketsStack) == '{' && x == '}')
+					) {
+					// check if top matches closing bracket type
+					// remove from back if yes
+					popDynArr(bracketsStack);
+				} else {
+					// push into array if doesn't match top bracket type
+					pushDynArr(bracketsStack, x);
+				}
+				break;
+		}
+
+	} while (x != '\0');
+
+	// if stack is emptey after do/while, it is balanced
+	if (sizeDynArr(bracketsStack) == 0)
+	{
+		deleteDynArr(bracketsStack);
+		return 1;
+	}
+
+	// if stack isn't empty, not balanced
+	deleteDynArr(bracketsStack);	
 	return 0;
 }
 
@@ -52,4 +101,3 @@ int main(int argc, char* argv[]){
 	
 	return 0;	
 }
-

@@ -53,15 +53,10 @@ void camelCase(char* word) {
 
 	// remove duplicate underscores
 	for (int i = 0; i < length; i++) {
-		if((word[i] == 95 && i == 0) || (word[i] == 95 && word[i+1] == 95)) {
-			for (int j = i; j < length; j++) {
-				word[j] = word[j+1];
+		if(word[i] == "_" && word[i+1] == "_") {
+			while (word[i] != '\0' && word[i+1] != '\0') {
+				word[i] = word[i+1];
 			}
-			length--;
-			i--;
-		} else if ((word[i] == 95 && i == (length-1))) {
-			
-			length--;
 		}
 	}
 
