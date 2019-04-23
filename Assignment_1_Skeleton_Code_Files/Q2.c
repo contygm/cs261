@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.2*/
-/* Name:
- * Date:
- * Solution description:
+/* Name: Genevieve Conty
+ * Date: 04/15/2019
+ * Solution description: HW Solution - Q.2
  */
 #include <stdio.h>
 #include <stdlib.h>
