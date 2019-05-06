@@ -24,12 +24,21 @@ int main(){
     linkedListDestroy(l);
 /* BAG */
 	
+	printf("\n--BAG Tests---\n");
+
 	struct LinkedList* k = linkedListCreate(); 
 	linkedListAdd (k, (TYPE)10);
 	linkedListAdd (k, (TYPE)11);
 	linkedListAdd (k, (TYPE)13);
 	linkedListAdd(k, (TYPE)14);
+	printf("bag add [14, 13, 11, 10]:\n");
+
+	linkedListPrint(k);
+
 	linkedListRemove(k, (TYPE)11);
+
+	printf("bag remove [14, 13, 10]:\n");
+
 	linkedListPrint(k);
 	linkedListDestroy(k);
 	return 0;
