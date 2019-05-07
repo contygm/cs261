@@ -1,6 +1,6 @@
 /***********************************************************
-* Author: 
-* Email: 
+* Author: Genevieve Conty
+* Email: contyg@oregonstate.edu 
 * Date Created: 
 * Filename: stack_from_queue.c
 *
@@ -76,8 +76,13 @@ struct Stack {
  */
 void listQueueInit(struct Queue* queue) 
 {
-	/* FIXME: You will write this function */
-
+	/* REVIEW: You will write this function */
+	assert(queue != 0);
+	
+	struct Link * sentinel = (struct Link *) malloc(sizeof (struct Link));
+	sentinel->next = NULL;
+	
+	queue->head = queue->tail = sentinel;
 }
 
 /**
@@ -89,8 +94,13 @@ void listQueueInit(struct Queue* queue)
  */
 struct Queue* listQueueCreate() 
 {
-	
-     /* FIXME: You will write this function */
+     /* REVIEW: You will write this function */
+	struct Queue * newQ = (struct Queue *) malloc(sizeof (struct Queue));
+	assert(newQ != 0);
+
+	listQueueInit(newQ);
+
+	return newQ;
 }
 
 /**
@@ -103,8 +113,16 @@ struct Queue* listQueueCreate()
  */
 void listQueueAddBack (struct Queue* queue, TYPE value) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(queue != 0);
 
+	struct Link * new = (struct Link *) malloc(sizeof (struct Link));
+
+	new->value = value;
+	new->next = NULL;
+	
+	queue->tail->next = new;
+	queue->tail = new;
 }
 
 /**
@@ -118,8 +136,11 @@ void listQueueAddBack (struct Queue* queue, TYPE value)
 TYPE listQueueFront(struct Queue* queue) 
 {
 
-   /* FIXME: You will write this function */
-
+   /* REVIEW: You will write this function */
+	assert(queue != 0);
+	assert(queue->head != queue->tail);
+	
+	return queue->head->next->value;
 }
 
 /**
@@ -132,8 +153,25 @@ TYPE listQueueFront(struct Queue* queue)
  */
 TYPE listQueueRemoveFront(struct Queue* queue) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(queue != 0);
+	assert(queue->head != queue->tail);
 
+	struct Link * front = queue->head->next;
+	
+	// remove link section
+	if(queue->head->next == queue->tail) {
+		queue->tail = queue->head;
+		queue->head->next = NULL;
+	} else {
+		queue->head->next = queue->head->next->next;
+	}
+
+	int value = front->value;
+	free(front);
+	front = NULL;
+	
+	return value;
 }
 
 /**
@@ -146,7 +184,13 @@ TYPE listQueueRemoveFront(struct Queue* queue)
  */
 int listQueueIsEmpty(struct Queue* queue) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(queue != 0);
+
+	if(queue->head == queue->tail) {
+		return 1;
+	}
+	return 0;
 }
 
 /**
@@ -161,14 +205,13 @@ int listQueueIsEmpty(struct Queue* queue)
 void listQueueDestroy(struct Queue* queue) 
 {
 
-        assert(queue != NULL);
+    assert(queue != NULL);
 	while(!listQueueIsEmpty(queue)) {
 		listQueueRemoveFront(queue);
 	}
 	free(queue->head);
 	free(queue);
 	queue = NULL;
-
 }
 
 /**
@@ -182,8 +225,16 @@ void listQueueDestroy(struct Queue* queue)
  */
 struct Stack* listStackFromQueuesCreate() 
 {
-	 /* FIXME: You will write this function */
+	 /* REVIEW: You will write this function */
+	struct Stack * newStack = malloc(sizeof(struct Stack));
 
+	assert(newStack != 0);
+
+	// iniitalize queues within stack
+	newStack->q1 = listQueueCreate();
+	newStack->q2 = listQueueCreate();
+
+	return newStack;
 };
 
 /**
@@ -220,7 +271,14 @@ void listStackDestroy(struct Stack* stack)
 int listStackIsEmpty(struct Stack* stack)
 {
 	
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(stack != 0);
+
+	if(listQueueIsEmpty(stack->q1)) {
+		return 1;
+	}
+
+	return 0;
 }
 
 /**
@@ -233,8 +291,12 @@ int listStackIsEmpty(struct Stack* stack)
  */
 void listSwapStackQueues(struct Stack* stack)
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(stack != 0);
 
+	struct Queue * temp = stack->q1;
+	stack->q1 = stack->q2;
+	stack->q2 = temp;
 }
 
 /**
@@ -253,7 +315,16 @@ void listSwapStackQueues(struct Stack* stack)
  */
 void listStackPush(struct Stack* stack, TYPE value) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(stack != 0);
+
+	listQueueAddBack(stack->q2, value);
+
+	while(!listQueueIsEmpty(stack->q1)) {
+		listQueueAddBack(stack->q2, listQueueRemoveFront(stack->q1));
+	}
+
+	listSwapStackQueues(stack);
 }
 
 /**
@@ -266,7 +337,25 @@ void listStackPush(struct Stack* stack, TYPE value)
  */
 TYPE listStackPop(struct Stack* stack) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(stack != 0);
+	assert(!listStackIsEmpty(stack));
+
+	struct Link * front = stack->q1->head->next;
+	
+	// remove link section
+	if(stack->q1->head->next == stack->q1->tail) {
+		stack->q1->tail = stack->q1->head;
+		stack->q1->head->next = NULL;
+	} else {
+		stack->q1->head->next = stack->q1->head->next->next;
+	}
+
+	int value = front->value;
+	free(front);
+	front = NULL;
+	
+	return value;
 }
 
 /**
@@ -279,7 +368,11 @@ TYPE listStackPop(struct Stack* stack)
  */
 TYPE listStackTop(struct Stack* stack) 
 {
-	/* FIXME: You will write this function */
+	/* REVIEW: You will write this function */
+	assert(stack != 0);
+	assert(!listStackIsEmpty(stack));
+
+	return stack->q1->head->next->value;
 }
 
 /**

@@ -1,6 +1,6 @@
 /***********************************************************
-* Author:
-* Email: 
+* Author: Genevieve Conty
+* Email: contyg@oregonstate.edu
 * Date Created: 
 * Filename: circularList.c
 *
