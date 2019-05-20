@@ -268,13 +268,20 @@ struct Node *_removeNode(struct Node *cur, TYPE val)
     assert(val != NULL);
 
     if(cur->val == val) {
+        if(cur->right == NULL) {
+            struct Node * temp = cur->left;
+            free(cur);
+            return temp;
+        }
 
+        cur->val = _leftMost(cur->right);
+        cur->right = _removeLeftMost(cur->right);
     } else if (compare(val, cur->val) == -1) {
         cur->left = _removeNode(cur->left, val);
-    } else {
+    } else if (compare(val, cur->val) == 1) {
         cur->right = _removeNode(cur->right, val);
     }
-    return NULL;
+    return cur;
 
 }
 /*
