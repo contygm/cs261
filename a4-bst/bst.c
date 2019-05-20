@@ -137,8 +137,7 @@ struct Node *_addNode(struct Node *cur, TYPE val)
 {
     assert(val != NULL);
 
-    /*TODO: write this*/
-    // TODO: use compare()
+    /*DONE: write this*/
     // current node is NULL
     if(cur == 0) {
         struct Node * newNode = (struct Node*) malloc(sizeof(struct Node));
@@ -149,8 +148,13 @@ struct Node *_addNode(struct Node *cur, TYPE val)
         newNode->val = val;
 
         return newNode;
+    } else if (compare(val, cur->val) == -1) {
+        cur->left = _addNode(cur->left, val);
+    } else {
+        cur->right = _addNode(cur->right, val);
     }
-    return NULL;
+
+    return cur;
 }
 
 /*
