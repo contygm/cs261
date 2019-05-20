@@ -188,8 +188,21 @@ element
 /*----------------------------------------------------------------------------*/
 int containsBSTree(struct BSTree *tree, TYPE val)
 {
-    /*TODO: write this*/
-    return 0;
+    /*DONE: write this*/
+    assert(tree != NULL);
+    assert(val != NULL);
+
+    struct Node * currentNode = tree->root;
+    while (currentNode != NULL) {
+        if(currentNode->val == val) {
+            return 1; // found it!
+        } else if (compare(val, currentNode->val) == -1) {
+            currentNode = currentNode->left; // search left
+        } else {
+            currentNode = currentNode->right; // search right
+        }
+    }
+    return 0; // not found
 }
 
 /*
@@ -203,8 +216,13 @@ int containsBSTree(struct BSTree *tree, TYPE val)
 /*----------------------------------------------------------------------------*/
 TYPE _leftMost(struct Node *cur)
 {
-    /*TODO: write this*/
-    return NULL;
+    /*DONE: write this*/
+    assert(cur != NULL);
+
+    while (cur->left != NULL) {
+        cur = cur->left;
+    }
+    return cur->val;
 }
 
 
@@ -222,8 +240,17 @@ Note:  If you do this iteratively, the above hint does not apply.
 /*----------------------------------------------------------------------------*/
 struct Node *_removeLeftMost(struct Node *cur)
 {
-    /*TODO: write this*/
-    return NULL;
+    /*DONE: write this*/
+    assert(cur != NULL);
+
+    if (cur->left == NULL) {
+        struct Node * temp = (struct Node *)cur->right;
+        free(cur);
+        return temp;
+    }
+
+    cur->left = _removeLeftMost(cur->left);
+    return cur;
 }
 /*
  recursive helper function to remove a node from the tree
@@ -236,7 +263,17 @@ struct Node *_removeLeftMost(struct Node *cur)
 /*----------------------------------------------------------------------------*/
 struct Node *_removeNode(struct Node *cur, TYPE val)
 {
-    /*TODO: write this*/
+    /*DONE: write this*/
+    assert(cur != NULL);
+    assert(val != NULL);
+
+    if(cur->val == val) {
+
+    } else if (compare(val, cur->val) == -1) {
+        cur->left = _removeNode(cur->left, val);
+    } else {
+        cur->right = _removeNode(cur->right, val);
+    }
     return NULL;
 
 }
@@ -531,19 +568,19 @@ int main(int argc, char *argv[]){
    /* After implementing your code, you must uncomment the following calls to the test functions and test your code. Otherwise, you will not receive any 
 points */
 
-  	//testAddNode();
+  	testAddNode();
 	
 	printf("\n");
-  	//testContainsBSTree();
+  	testContainsBSTree();
 	
 	printf("\n");
-       //testLeftMost();
+    testLeftMost();
 	
 	printf("\n");
-    //testRemoveLeftMost();
+    testRemoveLeftMost();
 	
 	printf("\n");
-    //testRemoveNode();
+    testRemoveNode();
     
 	
 	return 0;
