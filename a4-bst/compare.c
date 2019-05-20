@@ -23,18 +23,28 @@
   DO NOT compare the addresses pointed by left and right, i.e. "if (left < right)",
   which is really wrong.
  */
-int compare(TYPE left, TYPE right)
-{
-    /*FIXME: write this*/
-	return 0;
+int compare(TYPE left, TYPE right) {
 
+    /*DONE: write this*/
+    struct data* leftData;
+    struct data* rightData;
+    leftData = (struct data*)left;
+    rightData = (struct data*)right;
+
+    if (leftData->number < rightData->number) {
+        return -1; 
+    } else if (leftData->number > rightData->number) { 
+        return 1; 
+    }
+	return 0; // equal
 }
 
 /*Define this function, type casting the value of void * to the desired type*/
 void print_type(TYPE curval)
 {
-    /*FIXME: write this*/
-
+    /*DONE: write this*/
+    struct data * value = (struct data *)curval;
+    printf("%d\n", value->number);
 }
 
 

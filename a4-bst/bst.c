@@ -1,16 +1,12 @@
 /***********************************************************
-* Author:
-* Email: 
-* Date Created: 
+* Author: Genevieve Conty
+* Email: contyg@oregonstate.edu
+* Date Created: 5/20/2019
 * Filename: bst.c
 *
 * Solution description: Implementation of a Binary Search Tree 
 * that can store any arbitrary struct in its nodes.
 ************************************************************/
- 
-
-
-
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -139,7 +135,21 @@ int sizeBSTree(struct BSTree *tree) { return tree->cnt; }
  */
 struct Node *_addNode(struct Node *cur, TYPE val)
 {
-    /*write this*/
+    assert(val != NULL);
+
+    /*TODO: write this*/
+    // TODO: use compare()
+    // current node is NULL
+    if(cur == 0) {
+        struct Node * newNode = (struct Node*) malloc(sizeof(struct Node));
+        assert(newNode != 0);
+
+        // set left/right equal to 0
+        newNode->left = newNode->right = 0;
+        newNode->val = val;
+
+        return newNode;
+    }
     return NULL;
 }
 
@@ -174,7 +184,7 @@ element
 /*----------------------------------------------------------------------------*/
 int containsBSTree(struct BSTree *tree, TYPE val)
 {
-    /*write this*/
+    /*TODO: write this*/
     return 0;
 }
 
@@ -189,7 +199,7 @@ int containsBSTree(struct BSTree *tree, TYPE val)
 /*----------------------------------------------------------------------------*/
 TYPE _leftMost(struct Node *cur)
 {
-    /*write this*/
+    /*TODO: write this*/
     return NULL;
 }
 
@@ -208,7 +218,7 @@ Note:  If you do this iteratively, the above hint does not apply.
 /*----------------------------------------------------------------------------*/
 struct Node *_removeLeftMost(struct Node *cur)
 {
-    /*write this*/
+    /*TODO: write this*/
     return NULL;
 }
 /*
@@ -222,7 +232,7 @@ struct Node *_removeLeftMost(struct Node *cur)
 /*----------------------------------------------------------------------------*/
 struct Node *_removeNode(struct Node *cur, TYPE val)
 {
-    /*write this*/
+    /*TODO: write this*/
     return NULL;
 
 }
