@@ -11,7 +11,6 @@
 #include "CuTest.h"
 
 // CuTest
-
 char* CuStrAlloc(int size)
 {
 	char* newStr = (char*) malloc( sizeof(char) * (size) );

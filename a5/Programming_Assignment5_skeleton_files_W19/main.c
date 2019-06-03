@@ -59,7 +59,7 @@ char* nextWord(FILE* file)
  */
 int main(int argc, const char** argv)
 {
-    // FIXME: implement
+    // REVIEW: implement
     const char* fileName = "input1.txt";
     if (argc > 1)
     {
@@ -73,6 +73,31 @@ int main(int argc, const char** argv)
     
     // --- Concordance code begins here ---
     // Be sure to free the word after you are done with it here.
+    FILE *file = fopen(fileName, "r");
+    char* currWord = nextWord(file);
+
+    while (currWord != NULL)
+    {
+        hashMapPut(map, currWord, 1);
+        free(currWord);
+        currWord = nextWord(file);
+    }
+
+    int capacity = hashMapCapacity(map);
+    
+    for (int i = 0; i < capacity; i++) {
+        HashLink* current = map->table[i];
+        if (current != NULL) {
+           while (current) {
+              printf("KEY %s: VALUE %d\n", current->key, current->value);
+              current = current->next;
+           }
+        }
+    }
+    
+    hashMapPrint(map);
+
+    fclose(file);
     // --- Concordance code ends here ---
     
     

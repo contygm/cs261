@@ -157,16 +157,17 @@ void hashMapDelete(HashMap* map)
 int* hashMapGet(HashMap* map, const char* key)
 {
     // REVIEW: implement
-    int idx;
+    int index;
     struct HashLink * current;
 
-    idx = HASH_FUNCTION(key) % map->capacity;
-    current = map->table[idx];
+    index = HASH_FUNCTION(key) % map->capacity;
+    current = map->table[index];
 
     while (current != 0)
     {
         if(strcmp(current->key, key) == 0) {
-            return current->value;
+            // using & cuz must return int*
+            return &current->value; 
         }
     }
     
@@ -225,7 +226,46 @@ void resizeTable(HashMap* map, int capacity)
  */
 void hashMapPut(HashMap* map, const char* key, int value)
 {
-    // FIXME: implement
+    // REVIEW: implement
+    float load;
+    int capacity = hashMapCapacity(map);
+    int index = HASH_FUNCTION(key) % capacity;
+
+    if(index < 0) {
+        index += capacity;
+    }
+
+    if (hashMapContainsKey(map, key))
+    {
+        int * tmp = hashMapGet(map, key);
+        tmp = value;
+    }
+    else
+    {
+        HashLink * new = hashLinkNew(key, value, NULL);
+        assert(new != NULL);
+
+        if (map->table[index] == NULL)
+        {
+            map->table[index] = new;
+        }
+        else
+        {
+            HashLink* current = map->table[index];
+            while(current->next) {
+                current = current->next;
+            }
+            current->next = new;
+        }
+        map->size++;  
+    }
+
+    load = hashMapTableLoad(map);
+    if (load >= MAX_TABLE_LOAD)
+    {
+        resizeTable(map, (2*capacity));
+    }
+    
 }
 
 /**
@@ -237,7 +277,30 @@ void hashMapPut(HashMap* map, const char* key, int value)
  */
 void hashMapRemove(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    // REVIEW: implement
+    assert(map != NULL);
+    assert(key != NULL);
+
+    int index = HASH_FUNCTION(key) % hashMapCapacity(map);
+
+    HashLink * current = map->table[index];
+    HashLink * prev = NULL;
+
+    if(current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            map->table[index] = current->next;
+        } else {
+            while (strcmp(current->key, key) != 0)
+            {
+                prev = current;
+                current = current->next;
+            }
+            
+            if (prev) {
+                prev->next = current->next;
+            }
+        }
+    }
 }
 
 /**
@@ -252,7 +315,27 @@ void hashMapRemove(HashMap* map, const char* key)
  */
 int hashMapContainsKey(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    // REVIEW: implement
+    assert(map != NULL);
+    assert(key != NULL);
+
+    int capacity = hashMapCapacity(map);
+    int index = HASH_FUNCTION(key) % capacity;
+
+    if(index < 0) {
+        index += capacity;
+    }
+
+    HashLink * current = map->table[index];
+
+    while (current)
+    {
+        if(strcmp(current->key, key) == 0) {
+            return 1;
+        }
+        current = current->next;
+    }
+    
     return 0;
 }
 
@@ -288,8 +371,17 @@ int hashMapCapacity(HashMap* map)
  */
 int hashMapEmptyBuckets(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    // REVIEW: implement
+    int count = 0;
+    int capacity = hashMapCapacity(map);
+    for (int i = 0; i < capacity; i++)
+    {
+        if (map->table[i] == 0) {
+            count++;
+        }
+    }
+    
+    return count;
 }
 
 /**
@@ -305,8 +397,9 @@ float hashMapTableLoad(HashMap* map)
     // REVIEW: implement
     assert(map != 0);
     float size = (float) hashMapSize(map);
-    float capacity = (float) hashMapSize(map);
+    float capacity = (float) hashMapCapacity(map);
 
+    // (number of links) / (number of buckets)
     return (size/capacity);
 }
 
@@ -316,7 +409,19 @@ float hashMapTableLoad(HashMap* map)
  */
 void hashMapPrint(HashMap* map)
 {
-  // FIXME: implement
+  // REVIEW: implement
+  for (int i = 0; i < map->capacity; i++)
+  {
+      HashLink * tmp = map->table[i];
+      if(tmp != NULL) {
+          printf("\nBucket %i: ", i);
+          while (tmp != NULL)
+          {
+              printf("key: %s, value: %d", tmp->key, tmp->value);
+              tmp = tmp->next;
+          }
+      }
+  }
 
-   
+   printf("\n");
 }
