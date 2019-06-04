@@ -240,7 +240,7 @@ void hashMapPut(HashMap* map, const char* key, int value)
     if (hashMapContainsKey(map, key))
     {
         int * tmp = hashMapGet(map, key);
-        (*tmp) = value;
+        (*tmp) += value;
     }
     else
     {
@@ -421,7 +421,7 @@ void hashMapPrint(HashMap* map)
       if(tmp != NULL) {
           while (tmp != NULL)
           {
-              printf("key: %s, value: %d", tmp->key, tmp->value);
+              printf("(%s, %d) \n", tmp->key, tmp->value);
               tmp = tmp->next;
           }
       }

@@ -78,30 +78,36 @@ int main(int argc, const char** argv)
 
     while (currWord != NULL)
     {
-        // FIXME: increment value here
+        // go to lowercase for case insensitive
+        for (int j = 0; j < strlen(currWord); j++)
+        {
+            currWord[j] = tolower(currWord[j]);   
+        }
+
         hashMapPut(map, currWord, 1);
         free(currWord);
         currWord = nextWord(file);
     }
 
+    // bucket printing
     int capacity = hashMapCapacity(map);
-    
     for (int i = 0; i < capacity; i++) {
-        HashLink * current = map->table[i];
-        if (current != NULL) { // FIXME: can probs combine w while loop
-           while (current) {
-              printf("KEY %s: VALUE %d\n", current->key, current->value);
-              current = current->next;
-           }
+        HashLink* tmp = map->table[i];
+        if (tmp != NULL)
+        {
+            printf("\nBucket %i ->", i);
+            while (tmp != NULL)
+            {
+                printf("(%s, %d) ->", tmp->key, tmp->value);
+                tmp = tmp->next;
+            }
         }
-    }
+     }
     
-    hashMapPrint(map);
+    // hashMapPrint(map);
 
     fclose(file);
     // --- Concordance code ends here ---
-    
-    
     
     timer = clock() - timer;
     printf("\nRan in %f seconds\n", (float)timer / (float)CLOCKS_PER_SEC);
