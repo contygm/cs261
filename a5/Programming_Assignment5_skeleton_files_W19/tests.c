@@ -230,6 +230,7 @@ void testCase(CuTest* test, HashLink* links, const char** notKeys, int numLinks,
 void testSingleUnder(CuTest* test)
 {
     printf("\n--- Testing single-link chains under threshold ---\n");
+    printf("BRUH");
     HashLink links[] = {
         { .key = "a", .value = 0, .next = NULL },
         { .key = "c", .value = 1, .next = NULL },
@@ -237,7 +238,9 @@ void testSingleUnder(CuTest* test)
         { .key = "f", .value = 3, .next = NULL },
         { .key = "g", .value = 4, .next = NULL }
     };
+    printf("WHAT");
     const char* notKeys[] = { "b", "e", "h" };
+    printf("YUP");
     testCase(test, links, notKeys, 5, 3, 10);
 }
 

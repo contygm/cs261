@@ -78,6 +78,7 @@ int main(int argc, const char** argv)
 
     while (currWord != NULL)
     {
+        // FIXME: increment value here
         hashMapPut(map, currWord, 1);
         free(currWord);
         currWord = nextWord(file);
@@ -86,8 +87,8 @@ int main(int argc, const char** argv)
     int capacity = hashMapCapacity(map);
     
     for (int i = 0; i < capacity; i++) {
-        HashLink* current = map->table[i];
-        if (current != NULL) {
+        HashLink * current = map->table[i];
+        if (current != NULL) { // FIXME: can probs combine w while loop
            while (current) {
               printf("KEY %s: VALUE %d\n", current->key, current->value);
               current = current->next;

@@ -167,8 +167,10 @@ int* hashMapGet(HashMap* map, const char* key)
     {
         if(strcmp(current->key, key) == 0) {
             // using & cuz must return int*
-            return &current->value; 
+            return &(current->value); 
         }
+
+        current= current->next;
     }
     
     return NULL;
@@ -238,7 +240,7 @@ void hashMapPut(HashMap* map, const char* key, int value)
     if (hashMapContainsKey(map, key))
     {
         int * tmp = hashMapGet(map, key);
-        tmp = value;
+        (*tmp) = value;
     }
     else
     {
@@ -300,6 +302,9 @@ void hashMapRemove(HashMap* map, const char* key)
                 prev->next = current->next;
             }
         }
+
+        hashLinkDelete(current);
+        map->size--;
     }
 }
 
@@ -349,7 +354,7 @@ int hashMapSize(HashMap* map)
     // REVIEW: implement
     assert(map != 0);
 
-    return map->capacity;
+    return map->size;
 }
 
 /**
@@ -414,7 +419,6 @@ void hashMapPrint(HashMap* map)
   {
       HashLink * tmp = map->table[i];
       if(tmp != NULL) {
-          printf("\nBucket %i: ", i);
           while (tmp != NULL)
           {
               printf("key: %s, value: %d", tmp->key, tmp->value);

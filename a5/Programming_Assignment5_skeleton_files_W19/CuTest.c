@@ -1,4 +1,9 @@
-
+/*-------------------------------------------------------------------------*
+ * Copyright (c) 2003 Asim Jalis
+ *
+ * Additional modifications made by
+ * - Jacob Wahlgren 2015-2016
+ *------------------------------------------------------------------------*/
 
 #include <assert.h>
 #include <setjmp.h>
@@ -10,7 +15,10 @@
 
 #include "CuTest.h"
 
-// CuTest
+/*-------------------------------------------------------------------------*
+ * CuStr
+ *-------------------------------------------------------------------------*/
+
 char* CuStrAlloc(int size)
 {
 	char* newStr = (char*) malloc( sizeof(char) * (size) );
@@ -25,7 +33,10 @@ char* CuStrCopy(const char* old)
 	return newStr;
 }
 
-//CuString
+/*-------------------------------------------------------------------------*
+ * CuString
+ *-------------------------------------------------------------------------*/
+
 void CuStringInit(CuString* str)
 {
 	str->length = 0;
@@ -102,7 +113,10 @@ void CuStringInsert(CuString* str, const char* text, int pos)
 	memcpy(str->buffer + pos, text, length);
 }
 
-//CuTest
+/*-------------------------------------------------------------------------*
+ * CuTest
+ *-------------------------------------------------------------------------*/
+
 void CuTestInit(CuTest* t, const char* name, TestFunction function)
 {
 	t->name = CuStrCopy(name);
@@ -237,7 +251,10 @@ void CuAssertPtrEquals_LineMsg(CuTest* tc, const char* file, int line, const cha
 }
 
 
-// CuSuite
+/*-------------------------------------------------------------------------*
+ * CuSuite
+ *-------------------------------------------------------------------------*/
+
 void CuSuiteInit(CuSuite* testSuite)
 {
 	testSuite->count = 0;
