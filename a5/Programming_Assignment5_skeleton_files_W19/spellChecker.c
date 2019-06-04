@@ -125,59 +125,51 @@ int main(int argc, const char** argv)
         // REVIEW: implement
         // Implement the spell checker code here..
 
-        // if word is 'Quit' program quits
-        if (strcmp(inputBuffer, "Quit") == 0) {
-            quit = 1;
-            break;
-        }
-
         // go to lowercase for case insensitive
         for (int j = 0; j < strlen(inputBuffer); j++)
         {
             inputBuffer[j] = tolower(inputBuffer[j]);   
         }
 
-        // check if word is in dictionary
-        if (hashMapContainsKey(map, inputBuffer)) {
-            printf("The inputted word %s is spelled correctly. \n", inputBuffer);
+        // if word is 'Quit' program quits
+        if (strcmp(inputBuffer, "Quit") == 0) {
             quit = 1;
-            break;
-        }
+        } else if (hashMapContainsKey(map, inputBuffer)) { // check if word is in dictionary
+            printf("The inputted word %s is spelled correctly. \n", inputBuffer);
+        } else { // NOT spelled correctly
+            printf("The inputted word %s is spelled incorrectly. \n Did you mean...?", inputBuffer);
+            
+            // suggest 5 possible words
+            HashMap * suggested = hashMapNew(5);
 
-        // NOT spelled correctly
-        printf("The inputted word %s is spelled incorrectly. \n Did you mean...?", inputBuffer);
-        
-        // suggest 5 possible words
-        HashMap * suggested = hashMapNew(5);
+            // go thru dictionary
+            for (int i = 0; i < map->capacity; i++)
+            {
+                HashLink * current = map->table[i];
+                int levFactor = levenshtein(inputBuffer, current->key);
+                int count = 0;
 
-        // go thru dictionary
-        for (int i = 0; i < map->capacity; i++)
-        {
-            HashLink * current = map->table[i];
-            int levFactor = levenshtein(inputBuffer, current->key);
-            int count = 0;
-
-            // if count less than 5, just insert word at next space
-            if(count < 5) {
-                hashMapPut(suggested, current->key, levFactor);
-                count++;
-            } else {
-                // compare current with all suggested words
-                for (int n = 0; n < 5; n++)
-                {
-                    // replace if levFactor is lower
-                    if(levFactor < suggested->table[n]->value) {
-                        // remove
-                        hashMapRemove(suggested, suggested->table[n]->key);
-                        // put
-                        hashMapPut(suggested, current->key, levFactor);
+                // if count less than 5, just insert word at next space
+                if(count < 5) {
+                    hashMapPut(suggested, current->key, levFactor);
+                    count++;
+                } else {
+                    // compare current with all suggested words
+                    for (int n = 0; n < 5; n++)
+                    {
+                        // replace if levFactor is lower
+                        if(levFactor < suggested->table[n]->value) {
+                            // remove
+                            hashMapRemove(suggested, suggested->table[n]->key);
+                            // put
+                            hashMapPut(suggested, current->key, levFactor);
+                        }
                     }
                 }
             }
+            // print suggested
+            hashMapPrint(suggested);
         }
-
-        // print suggested
-        hashMapPrint(suggested);
     }
     
     hashMapDelete(map);
